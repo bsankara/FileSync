@@ -31,7 +31,14 @@ namespace FileSync
             }
             if (!isBucketCreated)
             {
-                createBucket(client, storageBucketName);
+                try
+                {
+                    createBucket(client, storageBucketName);
+                }
+                catch (AmazonS3Exception ex)
+                {
+                    System.Windows.Forms.MessageBox.Show(ex.Message);
+                }
             }
         }
         
@@ -54,8 +61,7 @@ namespace FileSync
             }
             catch (AmazonS3Exception ex)
             {
-                //TODO add a better exception handler here
-                return false;
+                throw ex;
             }
             return true;
         }
@@ -78,8 +84,11 @@ namespace FileSync
                     {
                         awsAccessKey.Text = data[1];
                         awsSecretKey.Text = data[2];
+                        return;
                     }
                 }
+                // if we get here we know the file is incorrectly formatted
+                System.Windows.Forms.MessageBox.Show("Error, file is in an incorrect format, please download your credentials directly from Amazon's IAM console.");
             }
 
         }
