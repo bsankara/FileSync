@@ -40,6 +40,10 @@ namespace FileSync
                     System.Windows.Forms.MessageBox.Show(ex.Message);
                 }
             }
+            Form2 realDataForm = new Form2();
+            realDataForm.Closed += (s, args) => this.Close();
+            realDataForm.Show();
+            this.Hide();
         }
         
         /// <summary>
