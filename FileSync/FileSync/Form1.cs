@@ -19,58 +19,15 @@ namespace FileSync
         {
             string secretAccessKey = awsAccessKey.Text;
             string secretKey = awsSecretKey.Text;
-            string storageBucketName = txtBucketName.Text;
+           
             AmazonS3Client client = new AmazonS3Client(secretAccessKey, secretKey, Amazon.RegionEndpoint.USWest2);
-            ListBucketsResponse response = client.ListBuckets();
-
-            bool isBucketCreated = false;
-            foreach (S3Bucket bucket in response.Buckets)
-            {
-                if (bucket.BucketName == storageBucketName)
-                    isBucketCreated = true;
-            }
-            if (!isBucketCreated)
-            {
-                try
-                {
-                    createBucket(client, storageBucketName);
-                }
-                catch (AmazonS3Exception ex)
-                {
-                    System.Windows.Forms.MessageBox.Show(ex.Message);
-                }
-            }
-            Form2 realDataForm = new Form2();
+            
+            Form2 realDataForm = new Form2(client);
             realDataForm.Closed += (s, args) => this.Close();
             realDataForm.Show();
             this.Hide();
         }
         
-        /// <summary>
-        /// 
-        /// </summary>,
-        /// <param name="client">Amazon S3 Cleint</param>
-        /// <param name="bucketName">Name of bucket</param>
-        /// <returns>boolean denotings success vs failure</returns>
-        private bool createBucket(AmazonS3Client client, string bucketName)
-        {
-            try
-            {
-                PutBucketRequest request = new PutBucketRequest
-                {
-                    BucketName = bucketName,
-                    UseClientRegion = true
-                };
-                PutBucketResponse response = client.PutBucket(request);
-            }
-            catch (AmazonS3Exception ex)
-            {
-                throw ex;
-            }
-            return true;
-        }
-
-
         //parses the CSV that you can download from Amazon
         private void selectCSVDialog_Click(object sender, EventArgs e)
         {
