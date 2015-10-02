@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 using Amazon.S3;
 using Amazon.S3.Model;
 
 namespace FileSync
 {
-    
+
     public partial class Form1 : Form
     {
+        private const string validLine1 = "User Name,Access Key Id,Secret Access Key";
         public Form1()
         {
             InitializeComponent();
@@ -63,6 +58,30 @@ namespace FileSync
                 return false;
             }
             return true;
+        }
+
+
+        //parses the CSV that you can download from Amazon
+        private void selectCSVDialog_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                string[] allLines = File.ReadAllLines(dialog.FileName);
+
+                // should only be 2 lines
+                if (allLines.Length == 2 && allLines[0] == validLine1)
+                {
+                    string[] data = allLines[1].Split(',');
+                    if (data.Length == 3)
+                    {
+                        awsAccessKey.Text = data[1];
+                        awsSecretKey.Text = data[2];
+                    }
+                }
+            }
+
         }
     }
 }

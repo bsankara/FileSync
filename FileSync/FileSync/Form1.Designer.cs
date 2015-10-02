@@ -35,6 +35,7 @@
             this.btnSubmit = new System.Windows.Forms.Button();
             this.txtBucketName = new System.Windows.Forms.TextBox();
             this.bucketNameLabel = new System.Windows.Forms.Label();
+            this.selectCSVDialog = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // awsAccessKey
@@ -55,7 +56,7 @@
             // 
             // awsSecretKey
             // 
-            this.awsSecretKey.Location = new System.Drawing.Point(42, 118);
+            this.awsSecretKey.Location = new System.Drawing.Point(42, 81);
             this.awsSecretKey.Name = "awsSecretKey";
             this.awsSecretKey.Size = new System.Drawing.Size(256, 20);
             this.awsSecretKey.TabIndex = 2;
@@ -63,7 +64,7 @@
             // awsSecretKeyLabel
             // 
             this.awsSecretKeyLabel.AutoSize = true;
-            this.awsSecretKeyLabel.Location = new System.Drawing.Point(337, 125);
+            this.awsSecretKeyLabel.Location = new System.Drawing.Point(337, 88);
             this.awsSecretKeyLabel.Name = "awsSecretKeyLabel";
             this.awsSecretKeyLabel.Size = new System.Drawing.Size(87, 13);
             this.awsSecretKeyLabel.TabIndex = 3;
@@ -95,11 +96,22 @@
             this.bucketNameLabel.TabIndex = 6;
             this.bucketNameLabel.Text = "Preferred Bucket Name";
             // 
+            // selectCSVDialog
+            // 
+            this.selectCSVDialog.Location = new System.Drawing.Point(179, 126);
+            this.selectCSVDialog.Name = "selectCSVDialog";
+            this.selectCSVDialog.Size = new System.Drawing.Size(145, 23);
+            this.selectCSVDialog.TabIndex = 7;
+            this.selectCSVDialog.Text = "Select CSV file";
+            this.selectCSVDialog.UseVisualStyleBackColor = true;
+            this.selectCSVDialog.Click += new System.EventHandler(this.selectCSVDialog_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(461, 261);
+            this.Controls.Add(this.selectCSVDialog);
             this.Controls.Add(this.bucketNameLabel);
             this.Controls.Add(this.txtBucketName);
             this.Controls.Add(this.btnSubmit);
@@ -123,6 +135,7 @@
         private System.Windows.Forms.Button btnSubmit;
         private System.Windows.Forms.TextBox txtBucketName;
         private System.Windows.Forms.Label bucketNameLabel;
+        private System.Windows.Forms.Button selectCSVDialog;
     }
 }
 
