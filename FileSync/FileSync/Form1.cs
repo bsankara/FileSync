@@ -15,8 +15,6 @@ namespace FileSync
     
     public partial class Form1 : Form
     {
-        //TODO make this changable/programaticly generate a unique one
-        private const string storageBucketName = "superawesomebucketname";
         public Form1()
         {
             InitializeComponent();
@@ -26,6 +24,7 @@ namespace FileSync
         {
             string secretAccessKey = awsAccessKey.Text;
             string secretKey = awsSecretKey.Text;
+            string storageBucketName = txtBucketName.Text;
             AmazonS3Client client = new AmazonS3Client(secretAccessKey, secretKey, Amazon.RegionEndpoint.USWest2);
             ListBucketsResponse response = client.ListBuckets();
 
@@ -35,10 +34,35 @@ namespace FileSync
                 if (bucket.BucketName == storageBucketName)
                     isBucketCreated = true;
             }
-            if (isBucketCreated)
+            if (!isBucketCreated)
             {
-                //we have the bucket so we don't need to create it.
+                createBucket(client, storageBucketName);
             }
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>,
+        /// <param name="client">Amazon S3 Cleint</param>
+        /// <param name="bucketName">Name of bucket</param>
+        /// <returns>boolean denotings success vs failure</returns>
+        private bool createBucket(AmazonS3Client client, string bucketName)
+        {
+            try
+            {
+                PutBucketRequest request = new PutBucketRequest
+                {
+                    BucketName = bucketName,
+                    UseClientRegion = true
+                };
+                PutBucketResponse response = client.PutBucket(request);
+            }
+            catch (AmazonS3Exception ex)
+            {
+                //TODO add a better exception handler here
+                return false;
+            }
+            return true;
         }
     }
 }
