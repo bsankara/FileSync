@@ -31,6 +31,8 @@
             this.bucketNameLabel = new System.Windows.Forms.Label();
             this.txtBucketName = new System.Windows.Forms.TextBox();
             this.btnStartSync = new System.Windows.Forms.Button();
+            this.btnSelectSyncFolder = new System.Windows.Forms.Button();
+            this.txtFolderToSync = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // bucketNameLabel
@@ -46,7 +48,7 @@
             // 
             this.txtBucketName.Location = new System.Drawing.Point(12, 59);
             this.txtBucketName.Name = "txtBucketName";
-            this.txtBucketName.Size = new System.Drawing.Size(256, 20);
+            this.txtBucketName.Size = new System.Drawing.Size(307, 20);
             this.txtBucketName.TabIndex = 7;
             // 
             // btnStartSync
@@ -59,11 +61,30 @@
             this.btnStartSync.UseVisualStyleBackColor = true;
             this.btnStartSync.Click += new System.EventHandler(this.btnStartSync_Click);
             // 
+            // btnSelectSyncFolder
+            // 
+            this.btnSelectSyncFolder.Location = new System.Drawing.Point(338, 107);
+            this.btnSelectSyncFolder.Name = "btnSelectSyncFolder";
+            this.btnSelectSyncFolder.Size = new System.Drawing.Size(125, 23);
+            this.btnSelectSyncFolder.TabIndex = 10;
+            this.btnSelectSyncFolder.Text = "Select Folder To Sync";
+            this.btnSelectSyncFolder.UseVisualStyleBackColor = true;
+            this.btnSelectSyncFolder.Click += new System.EventHandler(this.btnSelectSyncFolder_Click);
+            // 
+            // txtFolderToSync
+            // 
+            this.txtFolderToSync.Location = new System.Drawing.Point(12, 110);
+            this.txtFolderToSync.Name = "txtFolderToSync";
+            this.txtFolderToSync.Size = new System.Drawing.Size(307, 20);
+            this.txtFolderToSync.TabIndex = 11;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(513, 291);
+            this.Controls.Add(this.txtFolderToSync);
+            this.Controls.Add(this.btnSelectSyncFolder);
             this.Controls.Add(this.btnStartSync);
             this.Controls.Add(this.bucketNameLabel);
             this.Controls.Add(this.txtBucketName);
@@ -79,5 +100,7 @@
         private System.Windows.Forms.Label bucketNameLabel;
         private System.Windows.Forms.TextBox txtBucketName;
         private System.Windows.Forms.Button btnStartSync;
+        private System.Windows.Forms.Button btnSelectSyncFolder;
+        private System.Windows.Forms.TextBox txtFolderToSync;
     }
 }

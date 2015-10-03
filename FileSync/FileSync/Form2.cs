@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using Amazon.S3;
 using Amazon.S3.Model;
 
@@ -43,7 +38,7 @@ namespace FileSync
                 }
                 catch (AmazonS3Exception ex)
                 {
-                    System.Windows.Forms.MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.Message);
                 }
             }
         }
@@ -70,6 +65,18 @@ namespace FileSync
                 throw ex;
             }
             return true;
+        }
+
+        private void btnSelectSyncFolder_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                string selectedPath = dialog.SelectedPath;
+                txtFolderToSync.Text = selectedPath;
+                string[] files = Directory.GetFiles(selectedPath);
+            }
         }
     }
 }
