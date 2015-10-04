@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using Amazon.S3;
 using Amazon.S3.Model;
 
@@ -10,6 +9,7 @@ namespace FileSync
     public partial class Form2 : Form
     {
         private AmazonS3Client client;
+        private static string dbName = "FileSyncMain.sqlite";
         public Form2(AmazonS3Client authenticatedClient)
         {
             client = authenticatedClient;
@@ -41,6 +41,9 @@ namespace FileSync
                     MessageBox.Show(ex.Message);
                 }
             }
+            SqlQuery dbConnection = new SqlQuery(dbName);
+            if (!System.IO.File.Exists(dbName))
+                dbConnection.createDB();
         }
 
         /// <summary>
@@ -75,7 +78,7 @@ namespace FileSync
             {
                 string selectedPath = dialog.SelectedPath;
                 txtFolderToSync.Text = selectedPath;
-                string[] files = Directory.GetFiles(selectedPath);
+                string[] files = Directory.GetFiles(selectedPath,"*", SearchOption.AllDirectories);
             }
         }
     }
