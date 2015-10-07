@@ -43,7 +43,16 @@ namespace FileSync
             }
             SqlQuery dbConnection = new SqlQuery(dbName);
             if (!System.IO.File.Exists(dbName))
-                dbConnection.createDB();
+                dbConnection.createAndInitializeDatabase();
+            string fileSyncDirectory = txtFolderToSync.Text;
+            if (Directory.Exists(fileSyncDirectory))
+            {
+                dbConnection.addDirectoryToFileSyncDirectory(fileSyncDirectory);
+            }
+            else
+            {
+                //Invalid directory
+            }
         }
 
         /// <summary>
@@ -79,6 +88,7 @@ namespace FileSync
                 string selectedPath = dialog.SelectedPath;
                 txtFolderToSync.Text = selectedPath;
                 string[] files = Directory.GetFiles(selectedPath,"*", SearchOption.AllDirectories);
+                
             }
         }
     }
