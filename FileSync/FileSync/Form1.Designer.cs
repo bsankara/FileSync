@@ -48,9 +48,9 @@
             this.accessKeyLabel.AutoSize = true;
             this.accessKeyLabel.Location = new System.Drawing.Point(337, 61);
             this.accessKeyLabel.Name = "accessKeyLabel";
-            this.accessKeyLabel.Size = new System.Drawing.Size(91, 13);
+            this.accessKeyLabel.Size = new System.Drawing.Size(77, 13);
             this.accessKeyLabel.TabIndex = 1;
-            this.accessKeyLabel.Text = "AWS Access Key";
+            this.accessKeyLabel.Text = "B2 Account ID";
             // 
             // awsSecretKey
             // 
@@ -64,9 +64,9 @@
             this.awsSecretKeyLabel.AutoSize = true;
             this.awsSecretKeyLabel.Location = new System.Drawing.Point(337, 88);
             this.awsSecretKeyLabel.Name = "awsSecretKeyLabel";
-            this.awsSecretKeyLabel.Size = new System.Drawing.Size(87, 13);
+            this.awsSecretKeyLabel.Size = new System.Drawing.Size(96, 13);
             this.awsSecretKeyLabel.TabIndex = 3;
-            this.awsSecretKeyLabel.Text = "AWS Secret Key";
+            this.awsSecretKeyLabel.Text = "B2 Application Key";
             // 
             // btnSubmit
             // 

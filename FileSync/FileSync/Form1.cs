@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using Amazon.S3;
-using Amazon.S3.Model;
 
 namespace FileSync
 {
@@ -16,13 +14,8 @@ namespace FileSync
         }
 
         private void btnSubmit_Click(object sender, EventArgs e)
-        {
-            string secretAccessKey = awsAccessKey.Text;
-            string secretKey = awsSecretKey.Text;
-           
-            AmazonS3Client client = new AmazonS3Client(secretAccessKey, secretKey, Amazon.RegionEndpoint.USWest2);
-            
-            Form2 realDataForm = new Form2(client);
+        {            
+            Form2 realDataForm = new Form2();
             realDataForm.Closed += (s, args) => this.Close();
             realDataForm.Show();
             this.Hide();
