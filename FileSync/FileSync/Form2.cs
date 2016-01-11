@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using B2_CSharp_SDK;
 
 namespace FileSync
 {
