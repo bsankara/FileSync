@@ -30,6 +30,7 @@ namespace FileSync
         {
             createTableSyncDirectory();
             createTableFileStatus();
+            createTableSettings();
         }
 
         public void createTableSyncDirectory()
@@ -58,6 +59,57 @@ namespace FileSync
             command.Parameters.AddWithValue("@path", filePath);
             command.ExecuteNonQuery();
             closeConnection();
+        }
+
+        // For now this only stores preferred bucket name, but can store more in the future
+        public void createTableSettings()
+        {
+            string sql = "CREATE TABLE Settings (bucketName VARCHAR(256))";
+            openConnection();
+            SQLiteCommand command = new SQLiteCommand(sql, fileSyncConnection);
+            command.ExecuteNonQuery();
+            closeConnection();
+        }
+
+        public string getPrefferedBucketName()
+        {
+            string sql = "SELECT * FROM Settings";
+            openConnection();
+            SQLiteCommand command = new SQLiteCommand(sql, fileSyncConnection);
+            string oldBucketName = "";
+            using (SQLiteDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    oldBucketName = reader.GetString(0);
+                }
+            }
+            closeConnection();
+            return oldBucketName;
+        }
+
+        public void savePreferredBucketName(string bucketName)
+        {
+            string oldBucketName = getPrefferedBucketName();
+            if (oldBucketName == "")
+            {
+                openConnection();
+                string sql = "INSERT INTO \'Settings\' (bucketName) VALUES (@bucketName)";
+                SQLiteCommand command = new SQLiteCommand(sql, fileSyncConnection);
+                command.Parameters.AddWithValue("@bucketName", bucketName);
+                command.ExecuteNonQuery();
+                closeConnection();
+            }
+            else
+            {
+                openConnection();
+                string sql = "UPDATE \'Settings\' SET bucketName = \'" + bucketName + "\' WHERE bucketName=\'" + oldBucketName + "\'";
+                SQLiteCommand command = new SQLiteCommand(sql, fileSyncConnection);
+                command.Parameters.AddWithValue("@bucketName", bucketName);
+                command.ExecuteNonQuery();
+                closeConnection();
+            }
+
         }
 
         public void createAndInitializeDatabase()

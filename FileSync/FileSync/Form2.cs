@@ -11,8 +11,15 @@ namespace FileSync
         B2SDK authorizedSDK;
         public Form2(B2SDK sdk)
         {
-            authorizedSDK = sdk;
             InitializeComponent();
+            authorizedSDK = sdk;
+            SqlQuery dbConnection = new SqlQuery(dbName);
+            if (System.IO.File.Exists(dbName))
+            {
+                string bucketName = dbConnection.getPrefferedBucketName();
+                txtBucketName.Text = bucketName;
+            }
+
         }
 
         private void btnStartSync_Click(object sender, EventArgs e)
@@ -20,8 +27,11 @@ namespace FileSync
             string storageBucketName = txtBucketName.Text;
             SqlQuery dbConnection = new SqlQuery(dbName);
             if (!System.IO.File.Exists(dbName))
+            {
                 dbConnection.createAndInitializeDatabase();
+            }
             string fileSyncDirectory = txtFolderToSync.Text;
+            dbConnection.savePreferredBucketName(storageBucketName);
             if (Directory.Exists(fileSyncDirectory))
             {
                 dbConnection.addDirectoryToFileSyncDirectory(fileSyncDirectory);
