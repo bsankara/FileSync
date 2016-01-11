@@ -28,20 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.awsAccessKey = new System.Windows.Forms.TextBox();
+            this.b2AccountId = new System.Windows.Forms.TextBox();
             this.accessKeyLabel = new System.Windows.Forms.Label();
-            this.awsSecretKey = new System.Windows.Forms.TextBox();
+            this.b2ApplicationKey = new System.Windows.Forms.TextBox();
             this.awsSecretKeyLabel = new System.Windows.Forms.Label();
             this.btnSubmit = new System.Windows.Forms.Button();
             this.selectCSVDialog = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // awsAccessKey
+            // b2AccountId
             // 
-            this.awsAccessKey.Location = new System.Drawing.Point(42, 55);
-            this.awsAccessKey.Name = "awsAccessKey";
-            this.awsAccessKey.Size = new System.Drawing.Size(256, 20);
-            this.awsAccessKey.TabIndex = 0;
+            this.b2AccountId.Location = new System.Drawing.Point(42, 55);
+            this.b2AccountId.Name = "b2AccountId";
+            this.b2AccountId.Size = new System.Drawing.Size(256, 20);
+            this.b2AccountId.TabIndex = 0;
             // 
             // accessKeyLabel
             // 
@@ -52,12 +52,12 @@
             this.accessKeyLabel.TabIndex = 1;
             this.accessKeyLabel.Text = "B2 Account ID";
             // 
-            // awsSecretKey
+            // b2ApplicationKey
             // 
-            this.awsSecretKey.Location = new System.Drawing.Point(42, 81);
-            this.awsSecretKey.Name = "awsSecretKey";
-            this.awsSecretKey.Size = new System.Drawing.Size(256, 20);
-            this.awsSecretKey.TabIndex = 2;
+            this.b2ApplicationKey.Location = new System.Drawing.Point(42, 81);
+            this.b2ApplicationKey.Name = "b2ApplicationKey";
+            this.b2ApplicationKey.Size = new System.Drawing.Size(256, 20);
+            this.b2ApplicationKey.TabIndex = 2;
             // 
             // awsSecretKeyLabel
             // 
@@ -96,9 +96,9 @@
             this.Controls.Add(this.selectCSVDialog);
             this.Controls.Add(this.btnSubmit);
             this.Controls.Add(this.awsSecretKeyLabel);
-            this.Controls.Add(this.awsSecretKey);
+            this.Controls.Add(this.b2ApplicationKey);
             this.Controls.Add(this.accessKeyLabel);
-            this.Controls.Add(this.awsAccessKey);
+            this.Controls.Add(this.b2AccountId);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -108,9 +108,9 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox awsAccessKey;
+        private System.Windows.Forms.TextBox b2AccountId;
         private System.Windows.Forms.Label accessKeyLabel;
-        private System.Windows.Forms.TextBox awsSecretKey;
+        private System.Windows.Forms.TextBox b2ApplicationKey;
         private System.Windows.Forms.Label awsSecretKeyLabel;
         private System.Windows.Forms.Button btnSubmit;
         private System.Windows.Forms.Button selectCSVDialog;

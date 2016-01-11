@@ -8,15 +8,15 @@ namespace FileSync
 
     public partial class Form1 : Form
     {
-        private const string validLine1 = "User Name,Access Key Id,Secret Access Key";
         public Form1()
         {
             InitializeComponent();
         }
 
         private void btnSubmit_Click(object sender, EventArgs e)
-        {            
-            Form2 realDataForm = new Form2();
+        {
+            B2SDK sdk = new B2SDK(b2AccountId.Text, b2ApplicationKey.Text);
+            Form2 realDataForm = new Form2(sdk);
             realDataForm.Closed += (s, args) => this.Close();
             realDataForm.Show();
             this.Hide();
@@ -31,19 +31,17 @@ namespace FileSync
             {
                 string[] allLines = File.ReadAllLines(dialog.FileName);
 
-                // should only be 2 lines
-                if (allLines.Length == 2 && allLines[0] == validLine1)
+                string[] data = allLines[0].Split(',');
+
+                // only two parameters we're reading
+                if (data.Length == 2)
                 {
-                    string[] data = allLines[1].Split(',');
-                    if (data.Length == 3)
-                    {
-                        awsAccessKey.Text = data[1];
-                        awsSecretKey.Text = data[2];
-                        return;
-                    }
+                    b2AccountId.Text = data[0].Trim();
+                    b2ApplicationKey.Text = data[1].Trim();
+                    return;
                 }
                 // if we get here we know the file is incorrectly formatted
-                System.Windows.Forms.MessageBox.Show("Error, file is in an incorrect format, please download your credentials directly from Amazon's IAM console.");
+                System.Windows.Forms.MessageBox.Show("Error, file is in an incorrect format, please format your credentials file as \"<accountId> , <applicationKey>\".");
             }
 
         }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace B2_CSharp_SDK
 {
-    class B2SDK
+    public class B2SDK
     {
         static string BASE_BACKBLAZE_URL = "https://api.backblaze.com/b2api/v1/";
 

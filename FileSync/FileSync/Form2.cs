@@ -8,8 +8,10 @@ namespace FileSync
     public partial class Form2 : Form
     {
         private static string dbName = "FileSyncMain.sqlite";
-        public Form2()
+        B2SDK authorizedSDK;
+        public Form2(B2SDK sdk)
         {
+            authorizedSDK = sdk;
             InitializeComponent();
         }
 
@@ -38,7 +40,9 @@ namespace FileSync
             {
                 string selectedPath = dialog.SelectedPath;
                 txtFolderToSync.Text = selectedPath;
-                string[] files = Directory.GetFiles(selectedPath,"*", SearchOption.AllDirectories);
+
+                // we shouldn't do this here, needs to be done somewhere else in case they choose to type in the path
+                // string[] files = Directory.GetFiles(selectedPath,"*", SearchOption.AllDirectories);
                 
             }
         }
