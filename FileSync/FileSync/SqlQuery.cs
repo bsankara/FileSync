@@ -25,6 +25,7 @@ namespace FileSync
         /// <summary>
         /// Database Schema will have table FileStatus which contains the filename(string) and last sync time(string)
         /// Another table to hold folder that we are syncing (potentially more than one in the future?)
+        /// NOTE: We don't really care about injection because this is only local stuff and they'd only be messing up their own application...
         /// </summary>
         public void initializeDatabase()
         {
@@ -44,7 +45,7 @@ namespace FileSync
 
         public void createTableFileStatus()
         {
-            string sql = "CREATE TABLE FileStatus (filePath VARCHAR(256), lastSync INT32)";
+            string sql = "CREATE TABLE FileStatus (filePath VARCHAR(256), lastSync INT32, SHA1 VARCHAR(256))";
             openConnection();
             SQLiteCommand command = new SQLiteCommand(sql, fileSyncConnection);
             command.ExecuteNonQuery();
@@ -88,6 +89,7 @@ namespace FileSync
             return oldBucketName;
         }
 
+        // Normally a SQL file shouldn't be processing if statements and changing action based on that, but this will only be used in this app and for this one purpose
         public void savePreferredBucketName(string bucketName)
         {
             string oldBucketName = getPrefferedBucketName();
@@ -110,6 +112,20 @@ namespace FileSync
                 closeConnection();
             }
 
+        }
+
+        public void pushUnsyncedFileList(string[] filePaths)
+        {
+            openConnection();
+            foreach (string filePath in filePaths) {
+                string sql = "INSERT INTO \'FileStatus\' (filePath, lastSync, SHA1) VALUES (@filePath, @lastSync, @SHA1)";
+                SQLiteCommand command = new SQLiteCommand(sql, fileSyncConnection);
+                command.Parameters.AddWithValue("@filePath", filePath);
+                command.Parameters.AddWithValue("@lastSync", 0);
+                command.Parameters.AddWithValue("@SHA1", "");
+                command.ExecuteNonQuery();
+            }
+            closeConnection();
         }
 
         public void createAndInitializeDatabase()

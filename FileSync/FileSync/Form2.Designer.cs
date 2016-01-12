@@ -30,9 +30,10 @@
         {
             this.bucketNameLabel = new System.Windows.Forms.Label();
             this.txtBucketName = new System.Windows.Forms.TextBox();
-            this.btnStartSync = new System.Windows.Forms.Button();
+            this.btnPushData = new System.Windows.Forms.Button();
             this.btnSelectSyncFolder = new System.Windows.Forms.Button();
             this.txtFolderToSync = new System.Windows.Forms.TextBox();
+            this.btnPullData = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // bucketNameLabel
@@ -51,15 +52,15 @@
             this.txtBucketName.Size = new System.Drawing.Size(307, 20);
             this.txtBucketName.TabIndex = 7;
             // 
-            // btnStartSync
+            // btnPushData
             // 
-            this.btnStartSync.Location = new System.Drawing.Point(191, 244);
-            this.btnStartSync.Name = "btnStartSync";
-            this.btnStartSync.Size = new System.Drawing.Size(128, 23);
-            this.btnStartSync.TabIndex = 9;
-            this.btnStartSync.Text = "Start Sync";
-            this.btnStartSync.UseVisualStyleBackColor = true;
-            this.btnStartSync.Click += new System.EventHandler(this.btnStartSync_Click);
+            this.btnPushData.Location = new System.Drawing.Point(49, 171);
+            this.btnPushData.Name = "btnPushData";
+            this.btnPushData.Size = new System.Drawing.Size(128, 23);
+            this.btnPushData.TabIndex = 9;
+            this.btnPushData.Text = "Push Data To B2";
+            this.btnPushData.UseVisualStyleBackColor = true;
+            this.btnPushData.Click += new System.EventHandler(this.btnStartSync_Click);
             // 
             // btnSelectSyncFolder
             // 
@@ -78,14 +79,24 @@
             this.txtFolderToSync.Size = new System.Drawing.Size(307, 20);
             this.txtFolderToSync.TabIndex = 11;
             // 
+            // btnPullData
+            // 
+            this.btnPullData.Location = new System.Drawing.Point(298, 171);
+            this.btnPullData.Name = "btnPullData";
+            this.btnPullData.Size = new System.Drawing.Size(128, 23);
+            this.btnPullData.TabIndex = 12;
+            this.btnPullData.Text = "Pull Data From B2";
+            this.btnPullData.UseVisualStyleBackColor = true;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(513, 291);
+            this.ClientSize = new System.Drawing.Size(513, 208);
+            this.Controls.Add(this.btnPullData);
             this.Controls.Add(this.txtFolderToSync);
             this.Controls.Add(this.btnSelectSyncFolder);
-            this.Controls.Add(this.btnStartSync);
+            this.Controls.Add(this.btnPushData);
             this.Controls.Add(this.bucketNameLabel);
             this.Controls.Add(this.txtBucketName);
             this.Name = "Form2";
@@ -99,8 +110,9 @@
 
         private System.Windows.Forms.Label bucketNameLabel;
         private System.Windows.Forms.TextBox txtBucketName;
-        private System.Windows.Forms.Button btnStartSync;
+        private System.Windows.Forms.Button btnPushData;
         private System.Windows.Forms.Button btnSelectSyncFolder;
         private System.Windows.Forms.TextBox txtFolderToSync;
+        private System.Windows.Forms.Button btnPullData;
     }
 }

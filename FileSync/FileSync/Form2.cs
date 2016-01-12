@@ -35,6 +35,8 @@ namespace FileSync
             if (Directory.Exists(fileSyncDirectory))
             {
                 dbConnection.addDirectoryToFileSyncDirectory(fileSyncDirectory);
+                string[] files = Directory.GetFiles(fileSyncDirectory, "*", SearchOption.AllDirectories);
+                dbConnection.pushUnsyncedFileList(files);
             }
             else
             {
@@ -50,9 +52,6 @@ namespace FileSync
             {
                 string selectedPath = dialog.SelectedPath;
                 txtFolderToSync.Text = selectedPath;
-
-                // we shouldn't do this here, needs to be done somewhere else in case they choose to type in the path
-                // string[] files = Directory.GetFiles(selectedPath,"*", SearchOption.AllDirectories);
                 
             }
         }
