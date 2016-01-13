@@ -508,17 +508,17 @@ namespace B2_CSharp_SDK
             };
         }
 
-        public string b2_upload_file(byte[] bytes, string fileName, string bucketId)
+        public B2FileInfo b2_upload_file(byte[] bytes, string fileName, string bucketId)
         {
             if (!checkStringParamsNotEmpty(new string[] { fileName, bucketId }) || !authorized)
             {
-                return "";
+                return null;
             }
             SHA1CryptoServiceProvider sh = new SHA1CryptoServiceProvider();
             sh.ComputeHash(bytes);
             byte[] hash = sh.Hash;
             StringBuilder sb = new StringBuilder();
-            foreach(byte b in hash)
+            foreach (byte b in hash)
             {
                 sb.Append(b.ToString("x2"));
             }
@@ -537,19 +537,17 @@ namespace B2_CSharp_SDK
                 stream.Write(bytes, 0, bytes.Length);
                 stream.Close();
             }
-
-            HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
-            if (response.StatusCode == HttpStatusCode.OK)
+            try
             {
+                HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
                 var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
-                response.Close();
-                return responseString;
+                B2FileInfo fileInfo = (B2FileInfo)Newtonsoft.Json.JsonConvert.DeserializeObject(responseString, typeof(B2FileInfo));
+                return fileInfo;
             }
-            else
+            catch (Exception ex)
             {
-                response.Close();
-                return "";
-            }
+                return null;
+            };
         }
     }
 }

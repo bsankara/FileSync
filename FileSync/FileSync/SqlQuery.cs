@@ -128,6 +128,36 @@ namespace FileSync
             closeConnection();
         }
 
+
+        public void addSyncedFileInfo(string filePath, Int32 lastSync, string SHA1)
+        {
+            openConnection();
+            string sql = "INSERT INTO \'FileStatus\' (filePath, lastSync, SHA1) VALUES (@filePath, @lastSync, @SHA1)";
+            SQLiteCommand command = new SQLiteCommand(sql, fileSyncConnection);
+            command.Parameters.AddWithValue("@filePath", filePath);
+            command.Parameters.AddWithValue("@lastSync", lastSync);
+            command.Parameters.AddWithValue("@SHA1", SHA1);
+            command.ExecuteNonQuery();
+            closeConnection();
+        }
+
+        public string getDirectoryName()
+        {
+            string sql = "SELECT * FROM FileSyncDirectory";
+            openConnection();
+            SQLiteCommand command = new SQLiteCommand(sql, fileSyncConnection);
+            string oldBucketName = "";
+            using (SQLiteDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    oldBucketName = reader.GetString(0);
+                }
+            }
+            closeConnection();
+            return oldBucketName;
+        }
+
         public void createAndInitializeDatabase()
         {
             createDB();
