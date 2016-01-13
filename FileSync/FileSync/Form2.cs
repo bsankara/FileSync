@@ -5,6 +5,7 @@ using B2_CSharp_SDK;
 using System.Security.Cryptography;
 using System.Text;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace FileSync
 {
@@ -60,6 +61,26 @@ namespace FileSync
             return createdBucket.bucketId;
         }
 
+        private Dictionary<string, string> processFilesInBucket(string storageBucketId)
+        {
+
+            Dictionary<string, string> fileList = new Dictionary<string, string>();
+            B2FileList list = authorizedSDK.b2_list_file_names(storageBucketId, "");
+            List<B2File> individualFiles = new List<B2File>();
+            individualFiles.AddRange(list.files);
+            while (list.nextFileName != null)
+            {
+                list = authorizedSDK.b2_list_file_names(storageBucketId, list.nextFileName);
+                individualFiles.AddRange(list.files);
+            }
+
+            foreach(B2File file in individualFiles)
+            {
+                fileList.Add(file.fileName, file.fileId);
+            }
+            return fileList;
+        }
+
         private void btnStartSync_Click(object sender, EventArgs e)
         {
             string storageBucketName = txtBucketName.Text;
@@ -72,37 +93,61 @@ namespace FileSync
             dbConnection.savePreferredBucketName(storageBucketName);
             if (Directory.Exists(fileSyncDirectory))
             {
+                string bucketId = getOrCreateBucketId(storageBucketName);
+                Dictionary<string, string> processedFileList = processFilesInBucket(bucketId);
                 dbConnection.addDirectoryToFileSyncDirectory(fileSyncDirectory);
                 string[] files = Directory.GetFiles(fileSyncDirectory, "*", SearchOption.AllDirectories);
                 // disable buttons
 
                 btnPullData.Enabled = false;
                 btnPushData.Enabled = false;
-                string bucketId = getOrCreateBucketId(storageBucketName);
+
                 foreach (string fileName in files)
                 {
-                    byte[] fileBytes = File.ReadAllBytes(fileName);
-
                     // backblaze doesnt allow \'s so we have to replace with /'s .... we'll have to do this the other way around
                     // thankfully windows doesnt let you name files with that so it will only denominate folder separations.
-                    string file = fileName.Replace(@"\", "/");
+                    string cleanFileName = fileName.Replace(@"\", "/");
+                    byte[] fileBytes = File.ReadAllBytes(fileName);
                     string sha1Hash = calculateSHA1(fileBytes);
-                    B2FileInfo fileInfo = authorizedSDK.b2_upload_file(fileBytes, file, bucketId);
-                    TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
-                    int secondsSinceEpoch = (int)t.TotalSeconds;
-                    if (fileInfo.contentSha1 == sha1Hash)
+                    if (processedFileList.ContainsKey(cleanFileName))
                     {
-                        dbConnection.addSyncedFileInfo(file, secondsSinceEpoch, sha1Hash);
+                        B2FileInfo fileInfo = authorizedSDK.b2_get_file_info(processedFileList[cleanFileName]);
+                        if (fileInfo.contentSha1.Equals(sha1Hash))
+                        {
+                            // do nothing
+                        }
+                        else
+                        {
+                            authorizedSDK.b2_delete_file_version(cleanFileName, processedFileList[cleanFileName]);
+                            fileInfo = authorizedSDK.b2_upload_file(fileBytes, cleanFileName, bucketId);
+                            TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
+                            int secondsSinceEpoch = (int)t.TotalSeconds;
+                            if (fileInfo.contentSha1 == sha1Hash)
+                            {
+                                dbConnection.addSyncedFileInfo(cleanFileName, secondsSinceEpoch, sha1Hash);
+                            }
+                        }
+                    }
+                    else
+                    { 
+                        B2FileInfo fileInfo = authorizedSDK.b2_upload_file(fileBytes, cleanFileName, bucketId);
+                        TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
+                        int secondsSinceEpoch = (int)t.TotalSeconds;
+                        if (fileInfo.contentSha1 == sha1Hash)
+                        {
+                            dbConnection.addSyncedFileInfo(cleanFileName, secondsSinceEpoch, sha1Hash);
+                        }
+
                     }
                 }
-
-                //now that I think about this, it doesnt make sense to push this filelist on there -- we should only be putting things in when they're on the server
-                //dbConnection.pushUnsyncedFileList(files);
             }
             else
             {
                 //Invalid directory
             }
+
+            btnPullData.Enabled = true;
+            btnPushData.Enabled = true;
         }
 
         private void btnSelectSyncFolder_Click(object sender, EventArgs e)
